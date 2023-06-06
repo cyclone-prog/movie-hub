@@ -1,18 +1,13 @@
 import { useState,useEffect } from "react"
 import axios from "axios";
 import MovieCard from "@/components/MovieCard";
+import { Movie } from "@/interface/global.interface";
 
 const API_KEY = 'ad20575cdf796d64decd931cb0d5c1cb';
-interface MovieInterface {
-  id:number;
-  title:string;
-  poster_path:string;
-  release_date:string;
-  vote_average:number;
-}
+
 
   export default function Home() {
-  const [movies,setMovies] = useState<MovieInterface[]>([]);
+  const [movies,setMovies] = useState<Movie[]>([]);
 
   const getMovie = async() =>{
    try{
