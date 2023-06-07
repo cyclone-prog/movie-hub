@@ -5,15 +5,16 @@ import { Movie } from "@/interface/global.interface";
 import {useDispatch,useSelector} from "react-redux"
 import { setGlobalMovies } from "@/slice/MovieSlice";
 
+
 const API_KEY = 'ad20575cdf796d64decd931cb0d5c1cb';
 
 
   export default function Home() {
   //const [movies,setMovies] = useState<Movie[]>([]);
-  // here we are using getting value from the store with the help of useSelector hook.
+  
   const movies = useSelector((state:any)=> state.MovieReducer.movies);
-  // dispatch hook helps to call the reducer function, which eventually changes the store value.
-  const dispatch = useDispatch(); 
+ //the useSelector hook is used to extract the movies state value from the Redux store and assign it to the movies variable within the component. This enables the component to access and use the movies value for rendering or other purposes.
+  const dispatch = useDispatch();  // dispatch hook helps to call the reducer function, which eventually changes the store value.
     
 
   const getMovie = async() =>{
@@ -34,15 +35,16 @@ const API_KEY = 'ad20575cdf796d64decd931cb0d5c1cb';
   <>
   <div className="container mx-auto py-8">
     <h1 className="text-2xl font-bold mb-4">Popular movies</h1>
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-0">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:place-item-center">
       {/* by usign 'movies' && condition, the code ensures that mapping
       operation is performed only when 'movies' has true value i.e nonempty value. If 'movies' is false, the code within curly braces will not be executed, preventing any run-time errors. */}
       {movies &&
         movies.map((value:any)=>{
-          return <MovieCard key={value.id} title={value.title} poster={"https://image.tmdb.org/t/p/w500"+value.poster_path} releaseYear={value.release_date} rating={value.vote_average}/> 
+          return <MovieCard key={value.id} uniqueId={value.id} title={value.title} poster={"https://image.tmdb.org/t/p/w500"+value.poster_path} releaseYear={value.release_date} rating={value.vote_average}/> 
         })
       }
     </div>
+    
   </div>
   </>
   

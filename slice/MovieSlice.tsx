@@ -11,11 +11,17 @@ const movieslice = createSlice({
     reducers:{
         setGlobalMovies:(state,data)=>{
             state.movies = data.payload;
-            // This line updates the movies property of the state object with the value of data.payload. (response.data.results) is passed as the payload.
+            // This line updates the movies property of the state object with the value of data.payload. (response.data.results) is passed as the payload.   
+        },
+        handleDelete:(state,data)=>{
+            state.movies = state.movies.filter((movie)=>movie.id!=data.payload);
+            // console.log(state.movies[0].id)
             
         }
+        
     }
 
 })
+
 export default movieslice.reducer
-export const {setGlobalMovies} = movieslice.actions;
+export const {setGlobalMovies,handleDelete} = movieslice.actions;
