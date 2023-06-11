@@ -24,7 +24,6 @@ const API_KEY = 'ad20575cdf796d64decd931cb0d5c1cb';
     const response = await axios.get('https://api.themoviedb.org/3/movie/popular'+'?api_key='+API_KEY);
     dispatch(setGlobalMovies(response.data.results));
     // setMovies(response.data.results);
-    console.log(response.data.results);
    }catch(error){
     console.log(error);
    }
