@@ -13,5 +13,8 @@ export interface Movie {
 // interface keyword: This keyword is used to define a new interface in TypeScript.
 // Array<Movie>: This defines a property named movies of type Array<Movie>. The Array<Movie> type denotes an array of objects, where each object conforms to the structure defined by the Movie interface (assuming the Movie interface is already defined elsewhere in your code).
  export interface MovieInterface{
-  movies:Array<Movie>
+  // 'MovieInterface' is the name given to the interface being defined.
+  // 'movies' is the property within the 'MovieInterface' interface and this property is of type
+  movies:Array<Movie>;
+  originalMovies:Array<Movie>;
 }
