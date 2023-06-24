@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { handleDelete, searchMovies, setGlobalMovies } from '@/slice/MovieSlice';
-import axios from 'axios';
+import { fetchDataFromApi } from '@/utils/api';
 
 
 const SearchBox = () => {
     const [searchQuery,setSearchQuery] = useState('');  
     
     const dispatch = useDispatch();
-    const originalMovies = useSelector((state:any)=> state.move.originalMovies);
-    //move is reducer defined in store.
+    const originalMovies = useSelector((state:any)=> state.movie.originalMovies);
+    //movie is reducer defined in store.
    
 // const findMovies = (val:any)=>{
-//     storing in local states
+//     //storing in local states
 // const lowercaseResult = val.trim().toLowerCase();
 // const filterResult = originalMovies.filter((filterData:any)=>{
 //     return filterData.title.toLowerCase().includes(lowercaseResult)
@@ -20,16 +20,28 @@ const SearchBox = () => {
 // dispatch(searchMovies(filterResult));
 // }
 const findMovies =async ()=>{
-    const response = await axios.get(`https://api.themoviedb.org/3/search/movie?query=${searchQuery}`,{
-        headers:{
-            Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZDIwNTc1Y2RmNzk2ZDY0ZGVjZDkzMWNiMGQ1YzFjYiIsInN1YiI6IjY0N2UxYmViMGUyOWEyMmJkZmVjYTBkOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.7df2GsaXU-fSOuXtYv0T9PclSnJXakJkPbK_P4yHQkw',
-        },
+    fetchDataFromApi(`/search/movie?query=${searchQuery}`).then((res)=>{
+    dispatch(setGlobalMovies(res?.results));
+
     })
-    dispatch(setGlobalMovies(response?.data?.results));
+    // const response = await axios.get(`https://api.themoviedb.org/3/search/movie?query=${searchQuery}`,{
+    //     headers:{
+    //         Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZDIwNTc1Y2RmNzk2ZDY0ZGVjZDkzMWNiMGQ1YzFjYiIsInN1YiI6IjY0N2UxYmViMGUyOWEyMmJkZmVjYTBkOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.7df2GsaXU-fSOuXtYv0T9PclSnJXakJkPbK_P4yHQkw',
+    //     },
+    // })
+    // dispatch(setGlobalMovies(response?.data?.results));
 }
-useEffect(()=>{
-findMovies();
-},[searchQuery])
+useEffect(() => {
+    const debounceFN = setTimeout(() => {
+        if (searchQuery.trim() !== "") {
+            findMovies();
+          }
+    }, 900);
+
+    return () => clearTimeout(debounceFN);
+  }, [searchQuery]);
+
+
 return (
     
 

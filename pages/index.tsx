@@ -6,6 +6,7 @@ import {useDispatch,useSelector} from "react-redux";
 import { setGlobalMovies } from "@/slice/MovieSlice";
 import Footer from "@/components/Footer";
 import SearchBox from "@/components/SearchBox";
+import {fetchDataFromApi} from "../utils/api.js"
 
 
 const API_KEY = 'ad20575cdf796d64decd931cb0d5c1cb';
@@ -14,15 +15,19 @@ const API_KEY = 'ad20575cdf796d64decd931cb0d5c1cb';
   export default function Home() {
   //const [movies,setMovies] = useState<Movie[]>([]);
   
-  const {movies} = useSelector((state:any)=> state.move);
+  const {movies} = useSelector((state:any)=> state.movie);
  //the useSelector hook is used to extract the movies state value from the Redux store and assign it to the movies variable within the component. This enables the component to access and use the movies value for rendering or other purposes.
+
   const dispatch = useDispatch();  // dispatch hook helps to call the reducer function, which eventually changes the store value.
     
 
   const getMovie = async() =>{
    try{
-    const response = await axios.get('https://api.themoviedb.org/3/movie/popular'+'?api_key='+API_KEY);
-    dispatch(setGlobalMovies(response.data.results));
+    fetchDataFromApi("/movie/popular").then((res:any)=>{
+    dispatch(setGlobalMovies(res?.results)); 
+    })
+    // const response = await axios.get('https://api.themoviedb.org/3/movie/popular'+'?api_key='+API_KEY);
+    //dispatch(setGlobalMovies(response.data.results));
     // setMovies(response.data.results);
    }catch(error){
     console.log(error);
@@ -42,7 +47,7 @@ const API_KEY = 'ad20575cdf796d64decd931cb0d5c1cb';
       
       {/* by usign 'movies' && condition, the code ensures that mapping
       operation is performed only when 'movies' has true value i.e nonempty value. If 'movies' is false, the code within curly braces will not be executed, preventing any run-time errors. */}
-      {movies &&
+      {(movies.length>0) &&
         movies.map((value:any)=>{
           return <MovieCard key={value.id} uniqueId={value.id} title={value.title} poster={"https://image.tmdb.org/t/p/w500"+value.poster_path} releaseYear={value.release_date} rating={value.vote_average}/> 
         })
