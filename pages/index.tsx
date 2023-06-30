@@ -7,10 +7,11 @@ import { setGlobalMovies } from "@/slice/MovieSlice";
 import Footer from "@/components/Footer";
 import SearchBox from "@/components/SearchBox";
 import {fetchDataFromApi} from "../utils/api.js"
+import Image from "next/image";
 
 
 const API_KEY = 'ad20575cdf796d64decd931cb0d5c1cb';
-
+const noPoster = "/no-poster.png";
 
   export default function Home() {
   //const [movies,setMovies] = useState<Movie[]>([]);
@@ -49,8 +50,9 @@ const API_KEY = 'ad20575cdf796d64decd931cb0d5c1cb';
       operation is performed only when 'movies' has true value i.e nonempty value. If 'movies' is false, the code within curly braces will not be executed, preventing any run-time errors. */}
       {(movies.length>0) &&
         movies.map((value:any)=>{
-          return <MovieCard key={value.id} uniqueId={value.id} title={value.title} poster={"https://image.tmdb.org/t/p/w500"+value.poster_path} releaseYear={value.release_date} rating={value.vote_average}/> 
-        })
+          const posterUrl = value.poster_path? "https://image.tmdb.org/t/p/w500"+value.poster_path: noPoster;
+          return <MovieCard key={value.id} uniqueId={value.id} title={value.title} poster={posterUrl} releaseYear={value.release_date} rating={value.vote_average}/> 
+        }) 
       }
     </div>
     

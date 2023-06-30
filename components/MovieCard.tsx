@@ -14,7 +14,7 @@ interface MovieCardInterface {
 
 
 const MovieCard = ({uniqueId,title,poster,releaseYear,rating}: MovieCardInterface) => {
-  console.log();
+  
   const movies = useSelector((state:any)=>state.movie.movies);
   const dispatch = useDispatch();
   const delItem = (uniqueId:any) => {
